@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color:white;
+    margin: 0;
+}
+
+.calculator1 {
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+}
+.calculator2 {
+    background-color:rgb(89, 89, 243);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+}
+
+#display {
+    width: 260px;
+    height: 50px;
+    font-size: 24px;
+    text-align: right;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 25px;
+}
+
+button {
+    padding: 30px;
+    font-size: 18px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    background-color: #f1f1f1;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #ddd;
+}
+
+#resultText {
+    margin-top: 20px;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+}
+
+    </style>
+</head>
+<body>
+    <div  class="calculator1" style="background-color: #f7bbbb;">
+        <h3 style="color:purple;">Calculator</h3>
+        <div class="calculator2">
+            <input type="text" id="display" disabled style="background-color: white;"/>
+            <div class="button">
+                <button class="btn" onclick="appendToDisplay('1')">1</button>
+                <button class="btn" onclick="appendToDisplay('2')">2</button>
+                <button class="btn" onclick="appendToDisplay('3')">3</button>
+                <button class="btn" onclick="appendToDisplay('+')">+</button>
+                <br>
+                <br>
+    
+                <button class="btn" onclick="appendToDisplay('4')">4</button>
+                <button class="btn" onclick="appendToDisplay('5')">5</button>
+                <button class="btn" onclick="appendToDisplay('6')">6</button>
+                <button class="btn" onclick="appendToDisplay('-')">-</button>
+                <br><br>
+                <button class="btn" onclick="appendToDisplay('7')">7</button>
+                <button class="btn" onclick="appendToDisplay('8')">8</button>
+                <button class="btn" onclick="appendToDisplay('9')">9</button>
+                <button class="btn" onclick="appendToDisplay('*')">*</button>
+                <br><br>
+                
+                <button class="btn" onclick="appendToDisplay('0')">0</button>
+                <button class="btn" onclick="clearDisplay()">C</button>
+                <button class="btn" onclick="calculateResult()">=</button>
+                <button class="btn" onclick="appendToDisplay('/')">/</button>
+            </div>
+            <div id="resultText"></div>
+            </div>
+    
+        </div>
+    </div>
+    
+    <script>
+        let displayValue = '';
+let currentOperation = '';
+let resultText = document.getElementById('resultText');
+
+function appendToDisplay(value) {
+    if (displayValue === '' && isNaN(value) && value !== '-') {
+        return; // Prevent operator selection at the start
+    }
+    displayValue += value;
+    document.getElementById('display').value = displayValue;
+}
+
+function clearDisplay() {
+    displayValue = '';
+    document.getElementById('display').value = displayValue;
+    resultText.textContent = '';
+}
+
+function calculateResult() {
+    try {
+        // Ensure division by zero is handled
+        if (displayValue.includes('/0')) {
+            throw new Error('Cannot divide by zero');
+        }
+        
+        let result = eval(displayValue);
+        
+        if (result === Infinity || result === -Infinity) {
+            throw new Error('Cannot divide by zero');
+        }
+
+        document.getElementById('display').value = result;
+        resultText.textContent = `Result in text: ${numberToText(result)}`;
+    } catch (error) {
+        resultText.textContent = 'Error: Invalid operation';
+        document.getElementById('display').value = '';
+    }
+}
+
+function numberToText(num) {
+    const textNumber = new Intl.NumberFormat('en-US', {
+        style: 'decimal',
+        maximumFractionDigits: 20
+    }).format(num);
+    return textNumber;
+}
+
+    </script>
+</body>
+</html>
